@@ -1,0 +1,12 @@
+Checks commit with php-cs-fixer, cancels commit if codings standards are not correct.
+
+This is an attempt to improve https://github.com/LilaConcepts/LilaConceptsBestPracticeBundle/blob/master/hooks/pre-commit-cs-fixer.
+It checks files staged for commit, rather than working copy.
+
+INSTALL
+=======
+Simply copy pre-commit file to .git/hooks/ directory root and make it executable.
+
+CONFIGURATION
+=============
+In order to modyfy cs-fixer configuration place .php_cs file in your project root. For more configuration options refer to: https://github.com/fabpot/PHP-CS-Fixer
