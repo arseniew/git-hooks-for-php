@@ -1,0 +1,26 @@
+#!/bin/bash
+
+PROJECTROOT=$GIT_DIR/..
+
+# Copy all files staged for commit to temporary directory
+# http://stackoverflow.com/a/3068990/1549881
+TEMPDIR=$GIT_DIR/TEMP
+rm $TEMPDIR -fr
+mkdir $TEMPDIR -p
+cd $PROJECTROOT
+git checkout-index --prefix=$TEMPDIR/ -af
+
+# Move to temporary directory and check files with php interpreter
+cd $TEMPDIR
+for i in $(find -name \*.php); do
+    if ! php -l "$i" > /dev/null ; then
+        echo ""
+        echo "PHP syntax error, cancelling your commit."
+        echo ""
+        echo "Fix your syntax and add changes to your commit"
+        echo ""
+        exit 1
+    fi
+done
+
+
