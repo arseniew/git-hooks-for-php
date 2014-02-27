@@ -3,7 +3,7 @@
 # Based on afjlambert hook:
 # https://github.com/LilaConcepts/LilaConceptsBestPracticeBundle/blob/master/hooks/pre-commit-cs-fixer
 
-PROJECTROOT=$GIT_DIR/..
+PROJECTROOT=`pwd`
 
 # Checking if php-cs-fixer is available as system-wide command
 # this requires exact name "php-cs-fixer" you can do it, either by
@@ -13,8 +13,8 @@ if hash php-cs-fixer 2>/dev/null; then
     COMMAND=php-cs-fixer
 fi
 
-# If system comand is not available, czzheck for phar in project root
-# If that fails aswell attempt to download file 
+# If system command is not available, check for phar in project root
+# If that fails as well attempt to download file 
 if [ -z "$COMMAND" ]; then
     FIXER=php-cs-fixer.phar
     if [ ! -e ${PROJECTROOT}/${FIXER} ]; then
@@ -38,7 +38,7 @@ git checkout-index --prefix=$TEMPDIR/ -af
 if [ -e ${PROJECTROOT}/.php_cs ]; then
     cp .php_cs $TEMPDIR/
 fi
-# Aswell as phar executable
+# As well as phar executable
 if [ -n "$FIXER" ] && [ -e ${PROJECTROOT}/${FIXER} ]; then
     cp ${FIXER} $TEMPDIR/
 fi
@@ -47,9 +47,9 @@ fi
 cd $TEMPDIR
 RES=`${COMMAND} fix . --verbose --dry-run`
 if [ "$RES" != "" ]; then
-    echo "Coding standards are not correct, cancelling your commit."
+    echo "Coding standards are not correct, canceling your commit."
     echo ""
-    echo $RES
+    echo "$RES"
     echo ""
     echo "If you want to fix them run:"
     echo ""
@@ -60,3 +60,5 @@ if [ "$RES" != "" ]; then
     exit 1
 fi
 
+# moving back to original directory
+cd $PROJECTROOT
